@@ -1,0 +1,33 @@
+
+---
+- name: Ubuntu AMI 하드닝 (CIS Benchmark 기반)
+  hosts: all
+  become: yes
+
+  vars_files:
+    - vars/cis_config.yml
+
+  roles:
+    - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
+
+  tasks:
+    # 시스템 업데이트
+    - name: 모든 패키지 최신화
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    # Python3 설치 (Ansible 모듈 사용 시 필요할 수 있음)
+    - name: Python3 설치
+      package:
+        name: python3
+        state: present
+
+    # CIS 하드닝에 따른 추가 작업이 있다면 아래 import로 처리
+    - import_tasks: cis-harden.yml
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: sshd
+        state: restarted

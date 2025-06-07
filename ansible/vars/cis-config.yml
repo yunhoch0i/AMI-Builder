@@ -1,0 +1,25 @@
+---
+# CIS Benchmark configurations for UBUNTU20-CIS
+# UBUNTU20_CIS_section1: true   # Enable Section 1 (Initial Setup)
+# UBUNTU20_CIS_section2: false  # Disable Section 2 (Services)
+# UBUNTU20_CIS_section3: false  # Disable Section 3 (Network)
+
+# # Specific rules in Section 1
+# CIS_1_1_1_enable: true   # Enable /tmp permissions (CIS 1.1.1)
+# CIS_1_1_2_enable: false  # Disable /var permissions (CIS 1.1.2)
+# CIS_1_1_3_enable: true   # Enable /var/tmp permissions (example)
+# CIS_4_1_3_enable: true   # Enable auditd installation (CIS 4.1.3)
+# CIS_5_2_5_enable: true   # Enable SSH MaxAuthTries (CIS 5.2.5)
+# CIS_5_2_8_enable: true   # Enable PermitRootLogin no (CIS 5.2.8)
+
+UBUNTU20_CIS_section1: true
+UBUNTU20_CIS_section2: false
+UBUNTU20_CIS_section3: true
+UBUNTU20_CIS_section4: true
+UBUNTU20_CIS_section5: true
+UBUNTU20_CIS_section6: false
+
+CIS_1_1_1_enable: true   # /tmp 마운트 옵션
+CIS_1_1_3_enable: true   # /var/tmp 마운트 옵션
+CIS_1_1_2_enable: false  # /var는 운영상 막기 어려움 → 비활성화
+
