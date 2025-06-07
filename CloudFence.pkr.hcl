@@ -13,6 +13,7 @@ source "amazon-ebs" "Ubuntu" {
   region        = var.aws_region        # AWS 리전
   instance_type = var.instance_type    # 인스턴스 타입
 
+
   # ssh_timeout = var.ssh_timeout 
 
   source_ami_filter {

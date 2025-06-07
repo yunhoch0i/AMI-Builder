@@ -23,8 +23,8 @@
         name: python3
         state: present
 
-    # CIS 하드닝에 따른 추가 작업이 있다면 아래 import로 처리
-    - import_tasks: cis-harden.yml
+    # # CIS 하드닝에 따른 추가 작업이 있다면 아래 import로 처리
+    # - import_tasks: cis-harden.yml
 
   handlers:
     - name: Restart SSH
