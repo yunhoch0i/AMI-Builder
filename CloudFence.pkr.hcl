@@ -4,6 +4,10 @@ packer {
       version = ">= 1.3.6" # 현재 버전
       source  = "github.com/hashicorp/amazon"
     }
+    ansible = {
+      version = ">= 1.1.3"
+      source  = "github.com/hashicorp/ansible"
+    }
   }
 }
 
@@ -66,7 +70,7 @@ source "amazon-ebs" "Ubuntu" {
     owners = ["099720109477"]
     most_recent = true
   }
-    ssh_username = "ubuntu" # SSH 사용자 이름
+    ssh_username = var.ssh_username # SSH 사용자 이름
 
     tags = {
   Name        = var.tag_name
