@@ -7,6 +7,47 @@ packer {
   }
 }
 
+variable "ami_name" {
+  type    = string
+  default = null
+}
+
+variable "aws_region" {
+  type    = string
+  default = null
+}
+
+variable "instance_type" {
+  type    = string
+  default = null
+}
+
+variable "ssh_timeout" {
+  type    = string
+  default = "5m"
+}
+
+variable "ssh_username" {
+  type    = string
+  default = "ubuntu"
+}
+
+variable "tag_name" {
+  type    = string
+}
+
+variable "tag_environment" {
+  type    = string
+}
+
+variable "tag_created_by" {
+  type    = string
+}
+
+variable "ami_filter_name" {
+  type    = string
+}
+
 
 source "amazon-ebs" "Ubuntu" {
   ami_name      = var.ami_name # AMI 이름 충돌 방지
