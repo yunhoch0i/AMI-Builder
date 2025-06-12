@@ -87,5 +87,8 @@ source "amazon-ebs" "Ubuntu" {
     provisioner "ansible" {
       playbook_file = "./ansible/playbook.yml"
       galaxy_file = "./ansible/requirements.yml"
+      extra_arguments = [
+        "--extra-vars", "ansible_become_pass=''"
+      ]
     }
   }
