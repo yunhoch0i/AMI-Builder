@@ -9,4 +9,5 @@ UBUNTU20_CIS_section6: false  # 기타 보안 설정
 CIS_1_1_1_enable: true   # /tmp 마운트 옵션
 CIS_1_1_3_enable: true   # /var/tmp 마운트 옵션
 CIS_1_1_2_enable: false  # /var는 운영상 막기 어려움 → 비활성화
+CIS_4_3_5_enable: false
 
