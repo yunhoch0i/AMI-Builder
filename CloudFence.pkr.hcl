@@ -84,11 +84,27 @@ source "amazon-ebs" "Ubuntu" {
       "source.amazon-ebs.Ubuntu"
     ]
 
+    provisioner "shell" {
+    inline = [
+      # 암호 없는 sudo 권한을 부여하는 파일을 생성
+      "echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/99-packer-temp-nopasswd",
+      "sudo chmod 440 /etc/sudoers.d/99-packer-temp-nopasswd"
+    ]
+  }
+    # Ansible 프로비저너를 사용하여 Ansible 플레이북 실행
     provisioner "ansible" {
       playbook_file = "./ansible/playbook.yml"
       galaxy_file = "./ansible/requirements.yml"
-      extra_arguments = [
-        "--extra-vars", "ansible_become_pass=''"
-      ]
+    
     }
+
+    # 보안을 위해 임시로 추가했던 NOPASSWD 규칙을 빌드 마지막에 삭제할 수 있습니다.
+    provisioner "shell" {
+      inline = [
+        "sudo rm /etc/sudoers.d/99-packer-temp-nopasswd"
+      ]
+      run  = "on_success" # 이전 프로비저너가 모두 성공했을 때만 실행
+    }
+
+
   }

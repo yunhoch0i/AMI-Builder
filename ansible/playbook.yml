@@ -7,16 +7,6 @@
   vars_files:
     - vars/cis-config.yml
 
-  pre_tasks:
-    - name: Ensure ubuntu user can sudo without password (temporarily)
-      become: yes
-      copy:
-        dest: /etc/sudoers.d/packer-temp-nopasswd
-        content: "ubuntu ALL=(ALL) NOPASSWD:ALL\n"
-        owner: root
-        group: root
-        mode: '0440'
-
   roles:
     - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
 
@@ -55,13 +45,6 @@
       fail:
         msg: "Trivy scan found HIGH or CRITICAL vulnerabilities. AMI build aborted."
       when: trivy_result.rc != 0
-
-  post_tasks:
-    - name: Remove temporary NOPASSWD override
-      become: yes
-      file:
-        path: /etc/sudoers.d/packer-temp-nopasswd
-        state: absent
 
   handlers:
     - name: Restart SSH
