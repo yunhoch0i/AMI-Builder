@@ -2,14 +2,12 @@
 UBUNTU20_CIS_section1: true   # 시스템 보안 설정
 UBUNTU20_CIS_section2: false  # 사용자 계정 및 인증 설정
 UBUNTU20_CIS_section3: true   # 파일 및 디렉터리 권한 설정
-UBUNTU20_CIS_section4: true   # 로그 및 감사 설정
+UBUNTU20_CIS_section4: false   # 로그 및 감사 설정
 UBUNTU20_CIS_section5: true   # 패키지 및 업데이트 관리
 UBUNTU20_CIS_section6: false  # 기타 보안 설정
+
 
 CIS_1_1_1_enable: true   # /tmp 마운트 옵션
 CIS_1_1_3_enable: true   # /var/tmp 마운트 옵션
 CIS_1_1_2_enable: false  # /var는 운영상 막기 어려움 → 비활성화
 
-ubtu20cis_rule_4_3_5: false
-ubtu20cis_rule_4_3_6: false
-ubtu20cis_rule_4_3_7: false
