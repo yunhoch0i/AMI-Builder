@@ -1,4 +1,3 @@
-
 ---
 - name: Ubuntu AMI 하드닝 (CIS Benchmark 기반)
   hosts: all
@@ -7,15 +6,16 @@
   vars_files:
     - vars/cis-config.yml
 
-  roles:
-    - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
-
-  tasks:
-    # 시스템 업데이트
+  pre_tasks:
     - name: 모든 패키지 최신화
       apt:
         update_cache: yes
         upgrade: dist
+
+  roles:
+    - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
+
+  tasks:
 
     # Python3 설치 (Ansible 모듈 사용 시 필요할 수 있음)
     - name: Python3 설치
@@ -29,9 +29,11 @@
     - name: Install Trivy vulnerability scanner
       become: yes
       shell: |
-        apt-get update && apt-get install -y wget
-        wget -q https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.deb
-        dpkg -i trivy_0.50.1_Linux-64bit.deb
+        apt-get install -y wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/trivy.list
+        apt-get update
+        apt-get install -y trivy
 
     - name: Run Trivy filesystem scan
       become: yes
