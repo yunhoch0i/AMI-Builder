@@ -103,7 +103,6 @@ source "amazon-ebs" "Ubuntu" {
       inline = [
         "sudo rm /etc/sudoers.d/99-packer-temp-nopasswd"
       ]
-      run  = "on_success" # 이전 프로비저너가 모두 성공했을 때만 실행
     }
 
 
