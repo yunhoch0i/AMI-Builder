@@ -5,7 +5,7 @@
   become: yes
 
   vars_files:
-    - vars/cis_config.yml
+    - vars/cis-config.yml
 
   roles:
     - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
