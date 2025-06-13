@@ -11,4 +11,5 @@ CIS_1_1_3_enable: true   # /var/tmp 마운트 옵션
 CIS_1_1_2_enable: false  # /var는 운영상 막기 어려움 → 비활성화
 
 ubtu20cis_rule_4_3_5: false
-
+ubtu20cis_rule_4_3_6: false
+ubtu20cis_rule_4_3_7: false
