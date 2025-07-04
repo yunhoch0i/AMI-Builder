@@ -62,7 +62,7 @@ source "amazon-ebs" "Ubuntu" {
   ami_name      = var.ami_name # AMI 이름 충돌 방지
   region        = var.aws_region        # AWS 리전
   instance_type = var.instance_type    # 인스턴스 타입
-
+  ami_users   = [var.ami_share_account_id] 
 
   # ssh_timeout = var.ssh_timeout 
 
@@ -77,10 +77,6 @@ source "amazon-ebs" "Ubuntu" {
     
   }
   ssh_username = var.ssh_username # SSH 사용자 이름
-
-  launch_permission {
-    user_ids = [var.ami_share_account_id] # AMI 공유 계정 ID
-  }
 
   tags = {
     Name        = var.tag_name
