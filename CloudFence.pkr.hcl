@@ -52,6 +52,11 @@ variable "ami_filter_name" {
   type    = string
 }
 
+variable "ami_share_account_id" {
+  type    = string
+  default = ""
+}
+
 
 source "amazon-ebs" "Ubuntu" {
   ami_name      = var.ami_name # AMI 이름 충돌 방지
@@ -88,9 +93,11 @@ source "amazon-ebs" "Ubuntu" {
     provisioner "ansible" {
       playbook_file = "./ansible/playbook.yml"
       galaxy_file = "./ansible/requirements.yml"
-
-      # extra_arguments = [ "-vvv" ]
     
+    }
+
+    post-processor "amazon-ami-sharing" {
+      ami_users = [var.ami_share_account_id] # AMI 공유 계정 ID
     }
 
 

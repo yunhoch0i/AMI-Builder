@@ -36,6 +36,8 @@ jobs:
           run: packer validate -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
 
         - name: Build AMI
+          env: 
+            PK_VAR_ami_share_account_id: ${{ secrets.AMI_SHARE_ACCOUNT_ID }}
           run: packer build -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
 
           

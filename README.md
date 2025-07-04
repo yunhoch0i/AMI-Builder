@@ -44,6 +44,7 @@ DevSecOps Architecture for a Virtual Enterprise – AMI Builder Repo
                     "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
                     "token.actions.githubusercontent.com:sub": [
                         "repo:yunhoch0i/AMI-Builder:ref:refs/heads/main",
+                        "repo:yunhoch0i/AMI-Builder:ref:refs/heads/main",
                         "repo:WHS-DevSecOps-infra/AMI-Builder:ref:refs/heads/main"
                     ]
                 }
@@ -57,3 +58,10 @@ DevSecOps Architecture for a Virtual Enterprise – AMI Builder Repo
 - Packer 빌드 도중 마지막에 **Trivy**를 설치하고 루트 파일 시스템(`/`)을 스캔합니다.
 - **HIGH, CRITICAL** 수준의 취약점이 발견되면 AMI 빌드를 중단시켜 보안을 보장합니다.
 - 취약점 로그는 GitHub Actions에서 바로 확인 가능합니다.
+
+
+
+아래 명령어를 통해 로컬로 테스트 가능 
+```bash
+AWS_PROFILE=<sso_name> packer build -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
+```
