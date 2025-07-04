@@ -74,13 +74,18 @@ source "amazon-ebs" "Ubuntu" {
     }
     owners = ["099720109477"]
     most_recent = true
+    
   }
-    ssh_username = var.ssh_username # SSH 사용자 이름
+  ssh_username = var.ssh_username # SSH 사용자 이름
 
-    tags = {
-  Name        = var.tag_name
-  Environment = var.tag_environment
-  CreatedBy   = var.tag_created_by
+  launch_permission {
+    user_ids = [var.ami_share_account_id] # AMI 공유 계정 ID
+  }
+
+  tags = {
+    Name        = var.tag_name
+    Environment = var.tag_environment
+    CreatedBy   = var.tag_created_by
 }
 }
 
@@ -95,10 +100,5 @@ source "amazon-ebs" "Ubuntu" {
       galaxy_file = "./ansible/requirements.yml"
     
     }
-
-    post-processor "amazon-ami-sharing" {
-      ami_users = [var.ami_share_account_id] # AMI 공유 계정 ID
-    }
-
 
   }
