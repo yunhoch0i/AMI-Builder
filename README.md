@@ -65,3 +65,29 @@ DevSecOps Architecture for a Virtual Enterprise – AMI Builder Repo
 ```bash
 AWS_PROFILE=<sso_name> packer build -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
 ```
+
+
+## CIS Benchmark 적용 예외 규칙
+200명 규모의 초기 기업 환경에서의 운영 유연성과 개발 편의성을 위해 CIS Benchmark 규칙의 일부를 비활성화 하였습니다.
+모든 Level 1 규칙을 적용하는 것을 기본으로 하되, 아리 목록의 규칙들은 예외 처리가 이루어졌습니다.
+```
+파티션 분리 규칙
+- ubtu20cis_rule_1_1_2_1
+- ubtu20cis_rule_1_1_3_1
+- ubtu20cis_rule_1_1_4_1
+- ubtu20cis_rule_1_1_5_1
+- ubtu20cis_rule_1_1_6_1
+- ubtu20cis_rule_1_1_7_1
+제외 근거: 클라우드 환경에서 파티션을 물리적으로 분리한다면 인스턴스 관리의 복잡성을 높이고 초기 설정 이후의 변경이 어려워 개발이 이루어지는 초기 기업에서 불편함이 증가할 요인으로 판단하여 비활성화
+
+
+방화벽 기본 정책 규칙
+- ubtu20cis_rule_4_3_4
+제외 근거: 방화벽 기본 정책을 'Deny All'로 설정하는 정책으로 Trivy 검사를 통한 무결성 검증을 방해하여 비활성화
+
+
+SSH 접근 제어 규칙
+ubtu20cis_rule_6_2_5
+제외 근거: 여러 담당자가 시스템에 접근하여 테스트하고 작업을 해야하지만 SSH의 특정 접근을 제한하는 해당 규칙으로 업무 효윻을 떨어뜨릴 수 있다고 판단하여 비활성화
+
+```
