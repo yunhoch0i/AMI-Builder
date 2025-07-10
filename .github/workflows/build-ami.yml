@@ -33,13 +33,17 @@ jobs:
           run: packer init CloudFence.pkr.hcl
 
         - name: Validate Packer
-          env: 
-            PK_VAR_ami_share_account_id: ${{ secrets.AMI_SHARE_ACCOUNT_ID }}
-          run: packer validate -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
+          run: |
+            packer validate \
+            -var "ami_share_account_id=${{ secrets.AMI_SHARE_ACCOUNT_ID }}" \
+            -var-file=variables.pkrvars.hcl \
+            CloudFence.pkr.hcl
 
         - name: Build AMI
-          env: 
-            PK_VAR_ami_share_account_id: ${{ secrets.AMI_SHARE_ACCOUNT_ID }}
-          run: packer build -var-file=variables.pkrvars.hcl CloudFence.pkr.hcl
+          run: |
+            packer build \
+            -var "ami_share_account_id=${{ secrets.AMI_SHARE_ACCOUNT_ID }}" \
+            -var-file=variables.pkrvars.hcl \
+            CloudFence.pkr.hcl
 
           
