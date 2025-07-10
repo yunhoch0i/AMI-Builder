@@ -54,7 +54,6 @@ variable "ami_filter_name" {
 
 variable "ami_share_account_id" {
   type    = string
-  default = ""
 }
 
 
