@@ -1,0 +1,49 @@
+name: Build AMI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+    build-ami:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+            aws-region: ap-northeast-2
+
+        - name: Install Packer
+          uses: hashicorp/setup-packer@v2
+          with:
+            version: '1.10.0'
+
+        - name: Initialize Packer
+          run: packer init CloudFence.pkr.hcl
+
+        - name: Validate Packer
+          run: |
+            packer validate \
+            -var "ami_share_account_id=${{ secrets.AMI_SHARE_ACCOUNT_ID }}" \
+            -var-file=variables.pkrvars.hcl \
+            CloudFence.pkr.hcl
+
+        - name: Build AMI
+          run: |
+            packer build \
+            -var "ami_share_account_id=${{ secrets.AMI_SHARE_ACCOUNT_ID }}" \
+            -var-file=variables.pkrvars.hcl \
+            CloudFence.pkr.hcl
+
+          

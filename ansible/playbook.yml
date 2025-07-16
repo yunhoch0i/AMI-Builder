@@ -1,0 +1,72 @@
+---
+- name: Ubuntu AMI 하드닝 (CIS Benchmark 기반)
+  hosts: all
+  become: yes
+
+  vars_files:
+    - vars/cis-config.yml
+
+  pre_tasks:
+    - name: 모든 패키지 최신화
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+  roles:
+    - role: UBUNTU20-CIS  # GitHub에서 UNUTU20-CIS 설치
+
+  tasks:
+
+    # Python3 설치 (Ansible 모듈 사용 시 필요할 수 있음)
+    - name: Python3 설치
+      package:
+        name: python3
+        state: present
+
+    # # CIS 하드닝에 따른 추가 작업이 있다면 아래 import로 처리
+    # - import_tasks: cis-harden.yml
+
+    # Trivy 설치 및 설정
+    - name: Install Trivy vulnerability scanner
+      become: yes
+      shell: |
+        apt-get install -y wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/trivy.list
+        apt-get update
+        apt-get install -y trivy
+        
+
+    # 스캔 전 불필요한 캐시 파일 정리
+    - name: Clean apt cache before scanning
+      ansible.builtin.command: apt-get clean
+      changed_when: false # 이 명령어는 항상 상태를 바꾸지 않는 것으로 간주
+
+    # Trivy를 사용하여 파일 시스템 스캔
+    # AMI 빌드 시점에 파일 시스템을 스캔하여 HIGH 또는 CRITICAL 취약점이 있는지 확인
+    # 빌드 시점에서 snap 디렉토리와 apt 캐시 디렉토리의 경우 OS 검증 목표에 따라 제외
+    - name: Run Trivy filesystem scan
+      become: yes
+      shell: |
+        echo "[TRIVY] Starting filesystem scan..."
+        trivy fs \
+        --scanners vuln \
+        --severity HIGH,CRITICAL --exit-code 1 --no-progress \
+        --timeout 15m \
+        --skip-dirs /var/lib/apt/lists,/snap \
+        /
+      register: trivy_result
+      ignore_errors: yes
+
+    # Trivy 스캔 결과 출력
+    # 스캔 결과 HIGH 또는 CRITICAL 취약점이 발견되면 빌드를 중단
+    - name: Fail build if Trivy found critical vulnerabilities
+      fail:
+        msg: "Trivy scan found HIGH or CRITICAL vulnerabilities. AMI build aborted."
+      when: trivy_result.rc != 0
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: sshd
+        state: restarted
