@@ -29,30 +29,7 @@ DevSecOps Architecture for a Virtual Enterprise – AMI Builder Repo
 ### 2. GitHub Actions + OIDC 인증
 - AWS IAM Role을 GitHub OIDC를 통해 인증받아, Access Key 없이 CI를 수행합니다.
 - OIDC Trust Policy에 프로젝트 레포를 적용하여 해당 레포에서만 인증이 가능하도록 하였습니다.
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Federated": "arn:aws:iam::502676416967:oidc-provider/token.actions.githubusercontent.com"
-            },
-            "Action": "sts:AssumeRoleWithWebIdentity",
-            "Condition": {
-                "StringLike": {
-                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-                    "token.actions.githubusercontent.com:sub": [
-                        "repo:yunhoch0i/AMI-Builder:ref:refs/heads/main",
-                        "repo:yunhoch0i/AMI-Builder:ref:refs/heads/main",
-                        "repo:WHS-DevSecOps-infra/AMI-Builder:ref:refs/heads/main"
-                    ]
-                }
-            }
-        }
-    ]
-}
-```
+
 
 ### 3. Trivy 취약점 검사
 - Packer 빌드 도중 마지막에 **Trivy**를 설치하고 루트 파일 시스템(`/`)을 스캔합니다.
