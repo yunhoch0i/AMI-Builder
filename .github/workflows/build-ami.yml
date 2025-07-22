@@ -5,6 +5,8 @@ on:
         branches: [main]
     pull_request:
         branches: [main]
+    schedule:
+        - cron: '0 2 * * 1' # 매주 월요일 오전 2시에 실행
 
 permissions:
   id-token: write
