@@ -5,8 +5,10 @@ on:
         branches: [main]
     pull_request:
         branches: [main]
+        
+    # 매주 월요일 오전 2시에 실행
     schedule:
-        - cron: '0 2 * * 1' # 매주 월요일 오전 2시에 실행
+        - cron: '0 2 * * 1' 
 
 permissions:
   id-token: write
@@ -21,7 +23,7 @@ jobs:
           uses: actions/checkout@v3
 
         - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v2
+          uses: aws-actions/configure-aws-credentials@v4
           with:
             role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
             aws-region: ap-northeast-2
