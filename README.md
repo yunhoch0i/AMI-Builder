@@ -25,6 +25,7 @@ DevSecOps Architecture for a Virtual Enterprise – AMI Builder Repo
 ### 1. AMI 자동화 빌드
 - **Packer**를 사용하여 AMI 이미지를 자동으로 생성합니다.
 - **Ansible**을 통해 CIS Benchmark 기반 하드닝을 수행합니다.
+- Build 주기를 만들어 매주 자동으로 AMI를 빌드하여 Golden AMI의 무결성을 보장
 
 ### 2. GitHub Actions + OIDC 인증
 - AWS IAM Role을 GitHub OIDC를 통해 인증받아, Access Key 없이 CI를 수행합니다.
