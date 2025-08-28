@@ -7,8 +7,10 @@ on:
         branches: [main]
         
     # 매주 월요일 오전 2시에 실행
-    schedule:
-        - cron: '0 2 * * 1' 
+    # 프로젝트 종료 후 주기적인 actions 방지
+    # schedule:
+    #     - cron: '0 2 * * 1' 
+
 
 permissions:
   id-token: write
