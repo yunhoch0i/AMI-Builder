@@ -7,8 +7,9 @@ on:
         branches: [main]
         
     # 매주 월요일 오전 2시에 실행
-    schedule:
-        - cron: '0 2 * * 1' 
+    # 리소스 낭비를 막기 위해 주석 처리
+    # schedule:
+    #     - cron: '0 2 * * 1' 
 
 permissions:
   id-token: write
